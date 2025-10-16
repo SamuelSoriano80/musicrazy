@@ -4,6 +4,8 @@ const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
 const GitHubStrategy = require('passport-github2').Strategy;
+const { requireRole } = require('./middleware/roles');
+const User = require('./models/user');
 require('dotenv').config();
 
 const app = express();
@@ -18,6 +20,7 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(requireRole());
 
 // Passport setup
 passport.use(new GitHubStrategy({
@@ -26,16 +29,33 @@ passport.use(new GitHubStrategy({
   callbackURL: process.env.NODE_ENV === 'production'
     ? 'https://musicrazy.onrender.com/auth/github/callback'
     : 'http://localhost:3000/auth/github/callback'
-}, (accessToken, refreshToken, profile, done) => {
+}, async (accessToken, refreshToken, profile, done) => {
+  try {
+    let user = await User.findOne({ githubId: profile.id });
+    if (!user) {
+      user = await User.create({
+        githubId: profile.id,
+        username: profile.username,
+        email: profile.emails?.[0]?.value || null
+      });
+    }
+    return done(null, user);
+  } catch (err) {
   return done(null, profile);
+  }
 }));
 
 passport.serializeUser((user, done) => {
   done(null, user);
 });
 
-passport.deserializeUser((user, done) => {
-  done(null, user);
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
 });
 
 // Database connection

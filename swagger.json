@@ -1121,7 +1121,7 @@
           },
           "artistId": {
             "type": "string",
-            "example": "507f1f77bcf86cd799439011"
+            "example": "68eff252176c82b5fd3d9959"
           },
           "album": {
             "type": "string",
@@ -1129,7 +1129,7 @@
           },
           "genreId": {
             "type": "string",
-            "example": "507f1f77bcf86cd799439012"
+            "example": "68eff252176c82b5fd3d9954"
           },
           "releaseYear": {
             "type": "integer",
@@ -1143,6 +1143,7 @@
       },
       "SongUpdate": {
         "type": "object",
+        "required": ["title", "artistId", "genreId", "duration"],
         "properties": {
           "title": {
             "type": "string",
@@ -1150,7 +1151,7 @@
           },
           "artistId": {
             "type": "string",
-            "example": "507f1f77bcf86cd799439011"
+            "example": "68eff252176c82b5fd3d9959"
           },
           "album": {
             "type": "string",
@@ -1158,7 +1159,7 @@
           },
           "genreId": {
             "type": "string",
-            "example": "507f1f77bcf86cd799439012"
+            "example": "68eff252176c82b5fd3d9954"
           },
           "releaseYear": {
             "type": "integer",
@@ -1219,6 +1220,7 @@
       },
       "ArtistUpdate": {
         "type": "object",
+        "required": ["name"],
         "properties": {
           "name": {
             "type": "string",
@@ -1275,6 +1277,7 @@
       },
       "GenreUpdate": {
         "type": "object",
+        "required": ["name"],
         "properties": {
           "name": {
             "type": "string",
@@ -1324,7 +1327,7 @@
       },
       "PlaylistInput": {
         "type": "object",
-        "required": ["name"],
+        "required": ["name", "songIds", "createdBy"],
         "properties": {
           "name": {
             "type": "string",
@@ -1339,12 +1342,17 @@
             "items": {
               "type": "string"
             },
-            "example": ["507f1f77bcf86cd799439011", "507f1f77bcf86cd799439012"]
+            "example": ["68eff253176c82b5fd3d995e", "68eff253176c82b5fd3d995f"]
+          },
+          "createdBy": {
+            "type": "string",
+            "example": "68f1334e5653a3cb7bfe46af"
           }
         }
       },
       "PlaylistUpdate": {
         "type": "object",
+        "required": ["name", "songIds", "createdBy"],
         "properties": {
           "name": {
             "type": "string",
@@ -1359,7 +1367,11 @@
             "items": {
               "type": "string"
             },
-            "example": ["507f1f77bcf86cd799439011", "507f1f77bcf86cd799439013"]
+            "example": ["68eff253176c82b5fd3d995e", "68eff253176c82b5fd3d995f"]
+          },
+          "createdBy": {
+            "type": "string",
+            "example": "68f1334e5653a3cb7bfe46af"
           }
         }
       }

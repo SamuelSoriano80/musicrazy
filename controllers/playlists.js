@@ -9,6 +9,7 @@ exports.getAllPlaylists = async (req, res, next) => {
 
     const playlists = await Playlist.find()
       .populate('songIds', 'title artistId genreId')
+      .populate('createdBy', 'username role')
       .skip(skip)
       .limit(limit);
 
@@ -31,7 +32,8 @@ exports.getAllPlaylists = async (req, res, next) => {
 exports.getPlaylistById = async (req, res, next) => {
   try {
     const playlist = await Playlist.findById(req.params.id)
-      .populate('songIds', 'title artistId genreId');
+      .populate('songIds', 'title artistId genreId')
+      .populate('createdBy', 'username role');
 
     if (!playlist) return res.status(404).json({ error: 'Playlist not found' });
     res.json(playlist);
@@ -42,8 +44,16 @@ exports.getPlaylistById = async (req, res, next) => {
 
 exports.createPlaylist = async (req, res, next) => {
   try {
-    const playlist = new Playlist(req.body);
+    const playlistData = {
+      ...req.body,
+      createdBy: req.user._id
+    };
+
+    const playlist = new Playlist(playlistData);
     await playlist.save();
+
+    await playlist.populate('createdBy', 'username role');
+
     res.status(201).json(playlist);
   } catch (err) {
     next(err);
@@ -56,7 +66,9 @@ exports.updatePlaylist = async (req, res, next) => {
       req.params.id,
       req.body,
       { new: true, runValidators: true }
-    ).populate('songIds', 'title artistId genreId');
+    )
+      .populate('songIds', 'title artistId genreId')
+      .populate('createdBy', 'username role');
 
     if (!playlist) return res.status(404).json({ error: 'Playlist not found' });
     res.json(playlist);
