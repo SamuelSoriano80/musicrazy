@@ -36,7 +36,7 @@ describe('MusicCrazy API', () => {
       const newSong = {
         title: 'Test Song',
         artistId: '68eff252176c82b5fd3d9957',
-        genreId: '68eff252176c82b5fd3d9952',
+        genreId: '68eff252176c82b5fd3d9953',
         album: 'Test Album',
         releaseYear: 2025,
         duration: 180
@@ -54,7 +54,7 @@ describe('MusicCrazy API', () => {
             title: "Updated Song",
             artistId: "68eff252176c82b5fd3d9957",
             album: "Updated Album",
-            genreId: "68eff252176c82b5fd3d9952",
+            genreId: "68eff252176c82b5fd3d9953",
             releaseYear: 1976,
             duration: 360
         });
@@ -155,7 +155,7 @@ describe('MusicCrazy API', () => {
       const res = await request(app).post('/playlists').send({
         name: 'Test Playlist',
         description: 'Test description',
-        songIds: ['68eff253176c82b5fd3d995c'],
+        songIds: ['68eff253176c82b5fd3d995e'],
       });
       expect(res.statusCode).toBe(201);
       playlistId = res.body._id;
@@ -168,8 +168,7 @@ describe('MusicCrazy API', () => {
             name: 'Updated Playlist',
             description: "Updated playlist description",
             songIds: [
-                "68eff253176c82b5fd3d995c",
-                "68eff253176c82b5fd3d995d"
+                "68eff253176c82b5fd3d995f"
             ] 
         });
       expect(res.statusCode).toBe(200);
